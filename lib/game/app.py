@@ -1,24 +1,20 @@
 import threading
-from enum import Enum
 from pynput import keyboard
+
+from lib.utils import AppStatus
 
 from lib.game import screen, display
 from lib.screens.CounterScreen import CounterScreen
 from lib.screens.MainScreen import MainScreen
 
-class AppStatus(Enum):
-    Terminated = -1
-    Sleeping = 0
-    Running = 1
-
 
 class ASCIImon:
-    def __init__(self):
+    def __init__(self, resolution = (151, 40)):
         self.screen_contexts = screen.ScreenContextStack()
         self.screen_contexts.push("main", CounterScreen(app=self))
 
         self.status = AppStatus.Running
-        self.resolution = None
+        self.resolution = resolution
 
     @property
     def current_screen(self):
@@ -44,11 +40,7 @@ class ASCIImon:
         except:
             kstr = key.name
 
-        if kstr == "q":
-            self.status = AppStatus.Terminated
-        
-        if kstr == "u":
-            self.current_screen.update()
+        self.current_screen.controlsHandler(kstr)
     
     def run(self):
         display_thread = threading.Thread(
@@ -59,6 +51,8 @@ class ASCIImon:
         event_thread = keyboard.Listener(
             on_press=self.__keyPressHandler
         )
+
+        display.setResolution(*self.resolution)
 
         display_thread.start()
         event_thread.start()

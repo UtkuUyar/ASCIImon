@@ -7,6 +7,12 @@ class Screen:
         self.app = app
         self.updated = True
 
+    def controlsHandler(self, key: str) -> None:
+        pass
+
+    def update(self):
+        self.updated = True
+
 class EmptyStackException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
