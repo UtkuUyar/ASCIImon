@@ -2,8 +2,9 @@ import threading
 from enum import Enum
 from pynput import keyboard
 
-from lib.display import utils as disutils
-from lib.game import screens
+from lib.game import screen, display
+from lib.screens.CounterScreen import CounterScreen
+from lib.screens.MainScreen import MainScreen
 
 class AppStatus(Enum):
     Terminated = -1
@@ -13,10 +14,11 @@ class AppStatus(Enum):
 
 class ASCIImon:
     def __init__(self):
-        self.screen_contexts = screens.ScreenContextStack()
-        self.screen_contexts.push("main", screens.CounterScreen(app=self))
+        self.screen_contexts = screen.ScreenContextStack()
+        self.screen_contexts.push("main", CounterScreen(app=self))
 
         self.status = AppStatus.Running
+        self.resolution = None
 
     @property
     def current_screen(self):
@@ -29,7 +31,7 @@ class ASCIImon:
 
             if self.status == AppStatus.Running and self.current_screen.updated:
                 # Very lazy implementation of a stateful screen
-                disutils.clearDisplay()
+                display.clearDisplay()
                 self.current_screen.display()
                 self.current_screen.updated = False
     
@@ -63,4 +65,4 @@ class ASCIImon:
 
         display_thread.join()
 
-        disutils.clearDisplay()
+        display.clearDisplay()

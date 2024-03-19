@@ -32,23 +32,3 @@ class ScreenContextStack:
         context = self.contexts.pop(-1)
         if ret:
             return context
-
-class MainScreen(Screen):
-    def __init__(self, app=None) -> None:
-        super().__init__(app)
-
-    def display(self) -> None:
-        pass
-
-class CounterScreen(Screen):
-    def __init__(self, app=None) -> None:
-        super().__init__(app)
-
-        self.count = 0
-
-    def display(self) -> None:
-        print(f"I am a counter, the current count is: {self.count}")
-
-    def update(self) -> None:
-        self.count += 1
-        self.updated = True
