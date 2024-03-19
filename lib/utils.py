@@ -1,4 +1,8 @@
-from enum import Enum
+from enum import Enum, StrEnum
+
+class BgColor(StrEnum):
+    WHITE = "white"
+    BLACK = "black"
 
 class AppStatus(Enum):
     Terminated = -1

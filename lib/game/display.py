@@ -23,3 +23,10 @@ def setFullscreen():
         os.system("printf '\\033[8;9999;9999t'")
 
     return os.get_terminal_size()
+
+def setBackgroundColor(mode="white"):
+    os.system("color")
+    if mode == "white":
+        os.system("color f0")
+    else:
+        os.system("colof 0f")

@@ -1,7 +1,7 @@
 import threading
 from pynput import keyboard
 
-from lib.utils import AppStatus
+from lib.utils import AppStatus, BgColor
 
 from lib.game import screen, display
 from lib.screens.CounterScreen import CounterScreen
@@ -41,6 +41,11 @@ class ASCIImon:
             kstr = key.name
 
         self.current_screen.controlsHandler(kstr)
+
+    def init_display(self, bgcolor=BgColor.WHITE):
+
+        display.setResolution(*self.resolution)
+        display.setBackgroundColor(mode=bgcolor)
     
     def run(self):
         display_thread = threading.Thread(
@@ -52,7 +57,7 @@ class ASCIImon:
             on_press=self.__keyPressHandler
         )
 
-        display.setResolution(*self.resolution)
+        self.init_display()
 
         display_thread.start()
         event_thread.start()
